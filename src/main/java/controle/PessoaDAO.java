@@ -27,14 +27,15 @@ public class PessoaDAO {
 			// faz a execução da query
 ResultSet rs =			ps.executeQuery();
 while(rs.next()) {
-	int idPessoa = rs.getInt("id_pessoa");
+	int idPessoa = rs.getInt("id");
 	
 	String nome = rs.getString("nome");
-	
+	int idade = rs.getInt("idade");
 	
 	Pessoa p = new Pessoa();
 	p.setId(idPessoa);
 	p.setPrimeiro_nome(nome);
+	p.setIdade(idade);
 	pessoas.add(p);
 	
 }
