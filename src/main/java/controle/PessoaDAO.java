@@ -25,27 +25,25 @@ public class PessoaDAO {
 			PreparedStatement ps = con.prepareStatement(query);
 
 			// faz a execução da query
-ResultSet rs =			ps.executeQuery();
-while(rs.next()) {
-	int idPessoa = rs.getInt("id");
-	
-	String nome = rs.getString("nome");
-	int idade = rs.getInt("idade");
-	
-	Pessoa p = new Pessoa();
-	p.setId(idPessoa);
-	p.setPrimeiro_nome(nome);
-	p.setIdade(idade);
-	pessoas.add(p);
-	
-}
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				int idPessoa = rs.getInt("id");
+
+				String nome = rs.getString("nome");
+				int idade = rs.getInt("idade");
+
+				Pessoa p = new Pessoa();
+				p.setId(idPessoa);
+				p.setPrimeiro_nome(nome);
+				p.setIdade(idade);
+				pessoas.add(p);
+
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		c.fecharConexao();
-		
 
 		return pessoas;
 	}
@@ -73,6 +71,52 @@ while(rs.next()) {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	public boolean excluir(Pessoa p) {
+		Conexao c = Conexao.getInstancia();
+		Connection con = c.conectar();
+
+		String query = "DELETE FROM pessoa WHERE id_pessoa = ?";
+
+		try {
+
+			PreparedStatement ps = con.prepareStatement(query);
+			ps.setInt(1, p.getId());
+
+			ps.executeUpdate();
+
+			c.fecharConexao();
+
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	public boolean atualizar(Pessoa p) {
+
+		Conexao c = Conexao.getInstancia();
+
+		Connection con = c.conectar();
+		String query = "UPDATE pessoa SET primeiro_nome = ? WHERE id_pessoa = ?";
+
+		try {
+			PreparedStatement ps = con.prepareStatement(query);
+
+			ps.setString(1, p.getPrimeiro_nome());
+			ps.setInt(2, p.getId());
+			ps.executeUpdate();
+			c.fecharConexao();
+			return true;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+
 	}
 
 }
